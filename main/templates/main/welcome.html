@@ -1,0 +1,39 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "main/css/welcome.css" %}">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <header>
+        <div class="header">
+            <ul class="header-list">
+                <li class="header-item"><a href="{% url "main:welcome" %}"><img src="{% static "main/images/logo.png" %}" alt="Logo"></a></li>
+                <li class="header-item center not-logo"><a href="#">About</a></li>
+            </ul>
+            <ul class="header-list">
+                <li class="header-item sign-item center not-logo"><a href="#">Sign in</a></li>
+                <li class="header-item sign-item center not-logo"><a href="#">Sign up</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        <div class="main">
+            <a href="#">Start selling</a>
+        </div>
+    </main>
+
+    <footer>
+        <ul class="footer-list">
+            <li class="footer-item"><a href="{% url "main:welcome" %}">&#169; 2024 antinoa, Inc.</a></li>
+            <a href="https://github.com/Antinormanist"><li class="footer-item">Template by Antinormanist</li></a>
+            <a href="https://github.com/Antinormanist"><li class="footer-item">Design by Antinormanist</li></a>
+        </ul>
+    </footer>
+</body>
+</html>

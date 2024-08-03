@@ -2,4 +2,7 @@ from django.shortcuts import render, HttpResponse
 
 # Create your views here.
 def welcome(request):
-    return HttpResponse('<h1>Hello there</h1>')
+    context = {
+        'title': 'Welcome',
+    }
+    return render(request, 'main/welcome.html', context)
