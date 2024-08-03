@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static "main/css/welcome.css" %}">
+    <link rel="stylesheet" href="{% static "main/css/about.css" %}">
     <title>{{ title }}</title>
 </head>
 <body>
@@ -13,7 +13,7 @@
         <div class="header">
             <ul class="header-list">
                 <li class="header-item"><a href="{% url "main:welcome" %}"><img src="{% static "main/images/logo.png" %}" alt="Logo"></a></li>
-                <li class="header-item center not-logo"><a href="{% url "main:about" %}">About</a></li>
+                <li class="header-item center not-logo"><a href="{% url "main:welcome" %}">Main</a></li>
             </ul>
             <ul class="header-list">
                 <li class="header-item sign-item center not-logo"><a href="#">Sign in</a></li>
@@ -24,16 +24,10 @@
 
     <main>
         <div class="main">
-            <a href="#">Start selling</a>
+            <p>Antinoa is the online shop where <big>people</big> can buy and sell their stuff.</p>
+            <p>Our site provides a lot of categories, so you can find whatever you want!</p>
+            <p>I hope you'll enjoy this site. Don't get distracted, sign in or sign up if you still have not done it and let's go!</p>
         </div>
     </main>
-
-    <footer>
-        <ul class="footer-list">
-            <li class="footer-item"><a href="{% url "main:welcome" %}">&#169; 2024 antinoa, Inc.</a></li>
-            <a href="https://github.com/Antinormanist"><li class="footer-item">Template by Antinormanist</li></a>
-            <a href="https://github.com/Antinormanist"><li class="footer-item">Design by Antinormanist</li></a>
-        </ul>
-    </footer>
 </body>
 </html>

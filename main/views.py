@@ -6,3 +6,10 @@ def welcome(request):
         'title': 'Welcome',
     }
     return render(request, 'main/welcome.html', context)
+
+
+def about(request):
+    context = {
+        'title': 'About',
+    }
+    return render(request, 'main/about.html', context)
