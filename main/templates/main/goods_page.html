@@ -38,7 +38,7 @@
     <header>
         <div class="header">
             <ul class="header-list">
-                <li class="header-item not-image btn-li"><button class="btn"><img class="menu" src="../images/menu.png" alt="menu"></button></li>
+                <li class="header-item not-image btn-li"><button class="btn"><img class="menu" src="{% static "menu.png" %}" alt="menu"></button></li>
                 <li class="header-item not-image"><a href="#">Your products</a></li>
                 <li class="header-item not-image"><a href="#">Profile</a></li>
                 <li class="header-item not-image"><a href="#">Top up balance</a></li>
@@ -80,7 +80,7 @@
         <div class="main">
             <div class="categories">
                 <ul class="cat-list">
-                    <li class="cat-item cat-menu-li"><button class="cat-menu"><img class="menu" src="../images/menu.png" alt="menu"></button></li>
+                    <li class="cat-item cat-menu-li"><button class="cat-menu"><img class="menu" src="{% static "menu.png" %}" alt="menu"></button></li>
                     {% for cat in categories %}
                     <li class="cat-item"><a href="{% url "main:goods_page" cat.id %}">{{ cat.name }}</a></li>
                     {% endfor %}
@@ -102,7 +102,7 @@
                     <h3 class="arrow-right"><a href="#">></a></h3>
                     <div class="product">
                         <a href="#">
-                            <img src="../images/car.png" alt="image">
+                            <img src="#" alt="image">
                             <div class="product-desc">
                                 <h2>Car</h2>
                                 <h3>2000 $</h3>
@@ -113,9 +113,12 @@
                 </div>
                 {% for prod in prods %}
                 <div class="product">
-                    <a href="#">
-                        {% comment %} <img src="{% static "main/images/car.png" %}" alt="image"> {% endcomment %}
+                    <a href="{% url "main:product-detail" prod.id %}">
+                        {% if prod.image %}
                         <img src="{{ prod.image.url }}" alt="image">
+                        {% else %}
+                        <img src="{% static "no-img.png" %}" alt="image">
+                        {% endif %}
                         <div class="product-desc">
                             <h2>{{ prod.name }}</h2>
                             <h3>{{ prod.price }} $</h3>

@@ -8,7 +8,7 @@ class Products(models.Model):
     price = models.SmallIntegerField()
     description = models.TextField(max_length=999)
     image = models.ImageField(upload_to='product_images')
-    category = models.ForeignKey(to='Categories', on_delete=models.SET_NULL, null=True)
+    category = models.ForeignKey(to='Categories', on_delete=models.SET_NULL, null=True, blank=True)
     seller = models.ForeignKey(to=User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     
