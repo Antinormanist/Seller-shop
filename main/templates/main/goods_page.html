@@ -1,0 +1,134 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "main/css/goods_page.css" %}">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <div class="user-menu none">
+        <ul class="category-menu-list">
+            <li class="category-menu-item"><a href="#">Your products</a></li>
+            <li class="category-menu-item"><a href="#">Profile</a></li>
+            <li class="category-menu-item"><a href="#">Top up balance</a></li>
+            <li class="category-menu-item"><a href="#">Balance 123 $</a></li>
+        </ul>
+    </div>
+
+    <div class="category-menu none">
+        <ul class="cat-menu-list">
+            {% for cat in categories %}
+            <li class="cat-item"><a href="{% url "main:goods_page" cat.id %}">{{ cat.name }}</a></li>
+            {% endfor %}
+            {% comment %} <li class="cat-menu-item"><a href="#">Technologies</a></li>
+            <li class="cat-menu-item"><a href="#">Devices</a></li>
+            <li class="cat-menu-item"><a href="#">Sport</a></li>
+            <li class="cat-menu-item"><a href="#">Camping</a></li>
+            <li class="cat-menu-item"><a href="#">Goods for home</a></li>
+            <li class="cat-menu-item"><a href="#">Animals</a></li>
+            <li class="cat-menu-item"><a href="#">Hobbies</a></li>
+            <li class="cat-menu-item"><a href="#">Clothes</a></li>
+            <li class="cat-menu-item"><a href="#">Jobs</a></li> {% endcomment %}
+        </ul>
+    </div>
+    
+    <header>
+        <div class="header">
+            <ul class="header-list">
+                <li class="header-item not-image btn-li"><button class="btn"><img class="menu" src="../images/menu.png" alt="menu"></button></li>
+                <li class="header-item not-image"><a href="#">Your products</a></li>
+                <li class="header-item not-image"><a href="#">Profile</a></li>
+                <li class="header-item not-image"><a href="#">Top up balance</a></li>
+                <li class="header-item not-image"><a href="#">Balance: 123 $</a></li>
+                <li class="header-item image"><img class="img" src="" alt="pfp"></li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        <nav>
+            <form>
+                <a href="{% url "main:goods_page" %}">Clear filters</a>
+            </form>
+            <form method="post">
+                {% csrf_token %}
+                <input type="text" name="search">
+                <button>Search</button>
+            </form>
+            <form>
+                <label class="f1" for="price-asc">Price ascending</label>
+                <input class="f2" type="radio" name="price" value="asc" id="price-asc">
+                <label class="f3" for="price-desc">Price descending</label>
+                <input class="f4" type="radio" name="price" value="desc" id="price-desc">
+                <label class="f5" for="price-inp">In range</label>
+                <div class="inps">
+                    <input type="number" name="first-range-price" id="price-inp">
+                    <input type="number" name="second-range-price" id="price-inp">
+                </div>
+
+                <label class="f6" for="date-asc">Date ascending</label>
+                <input class="f7" type="radio" name="date" value="asc" id="date-asc">
+                <label class="f8" for="date-desc">Date descending</label>
+                <input class="f9" type="radio" name="date" value="desc" id="date-desc">
+
+                <button class="f10">Show products</button>
+            </form>
+        </nav>
+        <div class="main">
+            <div class="categories">
+                <ul class="cat-list">
+                    <li class="cat-item cat-menu-li"><button class="cat-menu"><img class="menu" src="../images/menu.png" alt="menu"></button></li>
+                    {% for cat in categories %}
+                    <li class="cat-item"><a href="{% url "main:goods_page" cat.id %}">{{ cat.name }}</a></li>
+                    {% endfor %}
+                    {% comment %} <li class="cat-item"><a href="{% url "main:goods_page" cat.id %}">Devices</a></li>
+                   <li class="cat-item"><a href="{% url "main:goods_page" cat.id %}">Sport</a></li>
+                   <li class="cat-item"><a href="{% url "main:goods_page" cat.id %}">Camping</a></li>
+                   <li class="cat-item"><a href="{% url "main:goods_page" cat.id %}">Goods for home</a></li> 
+                   <li class="cat-item"><a href="{% url "main:goods_page" cat.id %}">Animals</a></li> 
+                   <li class="cat-item"><a href="{% url "main:goods_page" cat.id %}">Hobbies</a></li> 
+                   <li class="cat-item"><a href="{% url "main:goods_page" cat.id %}">Clothes</a></li> 
+                   <li class="cat-item"><a href="{% url "main:goods_page" cat.id %}">Jobs</a></li>  {% endcomment %}
+                </ul>
+            </div>
+            <div class="products">
+                <div class="seen">
+                    {% comment %} <h2 class="seenh">You have seen</h2> {% endcomment %}
+                    <h2 class="seenh">COMPLETE THIS WITH REDIS</h2>
+                    <h3 class="arrow-left pag-enabled"><a href="#"><</a></h3>
+                    <h3 class="arrow-right"><a href="#">></a></h3>
+                    <div class="product">
+                        <a href="#">
+                            <img src="../images/car.png" alt="image">
+                            <div class="product-desc">
+                                <h2>Car</h2>
+                                <h3>2000 $</h3>
+                                <p>The best car you have ever seen!</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                {% for prod in prods %}
+                <div class="product">
+                    <a href="#">
+                        {% comment %} <img src="{% static "main/images/car.png" %}" alt="image"> {% endcomment %}
+                        <img src="{{ prod.image.url }}" alt="image">
+                        <div class="product-desc">
+                            <h2>{{ prod.name }}</h2>
+                            <h3>{{ prod.price }} $</h3>
+                            <p>{{ prod.description }}</p>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+
+    <script src="{% static "main/js/goods_menu.js" %}"></script>
+    <script src="{% static "main/js/goods_cat_menu.js" %}"></script>
+</body>
+</html>
