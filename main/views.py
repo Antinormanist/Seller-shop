@@ -93,3 +93,28 @@ def product_detail(request, prod_id):
         'rate': rate,
     }
     return render(request, 'main/product-detail.html', context)
+
+
+def product_add(request):
+    if request.POST:
+        image = request.FILES.get('image', '')
+        name = request.POST.get('name', '')
+        price = request.POST.get('price', '')
+        description = request.POST.get('description', '')
+        category = request.POST.get('category')
+        if category:
+            category = Categories.objects.get(name=category)
+        if name and price:
+            Products.objects.create(
+                image=image,
+                name=name,
+                price=int(price),
+                description=description,
+                category=category,
+                seller=request.user
+            )
+    
+    context = {
+        'title': 'Product add'
+    }
+    return render(request, 'main/product-add.html', context)

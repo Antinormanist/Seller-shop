@@ -1,0 +1,67 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "main/css/product-add.css" %}">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <div class="user-menu none">
+        <ul class="category-menu-list">
+            <li class="category-menu-item"><a href="{% url "main:goods_page" %}">Products</a></li>
+            <li class="category-menu-item"><a href="#">Profile</a></li>
+            <li class="category-menu-item"><a href="#">Top up balance</a></li>
+            <li class="category-menu-item"><a href="#">Balance 123 $</a></li>
+        </ul>
+    </div>
+    
+    <header>
+        <div class="header">
+            <ul class="header-list">
+                <li class="header-item not-image btn-li"><button class="btn"><img class="menu" src="{% static "menu.png" %}" alt="menu"></button></li>
+                <li class="header-item not-image"><a href="{% url "main:goods_page" %}">Products</a></li>
+                <li class="header-item not-image"><a href="#">Profile</a></li>
+                <li class="header-item not-image"><a href="#">Top up balance</a></li>
+                <li class="header-item not-image"><a href="#">Balance: 123 $</a></li>
+                <li class="header-item image"><img class="img" src="../images/pfp.png" alt="pfp"></li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        <div class="main">
+            <div class="product">
+                <form method="post" enctype="multipart/form-data" class="form">
+                    {% csrf_token %}
+                    <label for="image">Product's photo</label>
+                    <input class="imgg" type="file" name="image" id="image">
+                    <label for="name">Name</label>
+                    <input type="text" name="name" id="name">
+                    <label for="price">Price</label>
+                    <input type="number" name="price" id="price">
+                    <label for="description">Description</label>
+                    <input class="description" type="text" name="description" id="description">
+                    <label for="category">Category</label>
+                    <select name="category" id="category">
+                        <option value="Technologies">Technologies</option>
+                        <option value="Devices">Devices</option>
+                        <option value="Sport">Sport</option>
+                        <option value="Camping">Camping</option>
+                        <option value="Goods for home">Goods for home</option>
+                        <option value="Animals">Animals</option>
+                        <option value="Hobbies">Hobbies</option>
+                        <option value="Clothes">Clothes</option>
+                        <option value="Jobs">Jobs</option>
+                    </select>
+                    <button>Create</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="{% static "main/js/goods_menu.js" %}"></script>
+</body>
+</html>
