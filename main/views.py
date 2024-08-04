@@ -118,3 +118,11 @@ def product_add(request):
         'title': 'Product add'
     }
     return render(request, 'main/product-add.html', context)
+
+
+def user_products(request):
+    context = {
+        'title': 'Your products',
+        'prods': Products.objects.filter(seller=request.user)
+    }
+    return render(request, 'main/user-products.html', context)
