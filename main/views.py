@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, reverse
+from django.contrib.auth.decorators import login_required
 
 from .models import Products, Categories
 from .utils import q_search
@@ -16,6 +17,7 @@ def about(request):
         'title': 'About',
     }
     return render(request, 'main/about.html', context)
+
 
 
 def goods_page(request, cat_id=None):
@@ -54,6 +56,7 @@ def goods_page(request, cat_id=None):
     return render(request, 'main/goods_page.html', context)
 
 
+@login_required
 def product_detail(request, prod_id):
     product = Products.objects.get(id=prod_id)
     product_asq = Products.objects.filter(id=prod_id)
@@ -95,6 +98,7 @@ def product_detail(request, prod_id):
     return render(request, 'main/product-detail.html', context)
 
 
+@login_required
 def product_add(request):
     if request.POST:
         image = request.FILES.get('image', '')
@@ -120,6 +124,7 @@ def product_add(request):
     return render(request, 'main/product-add.html', context)
 
 
+@login_required
 def user_products(request):
     context = {
         'title': 'Your products',

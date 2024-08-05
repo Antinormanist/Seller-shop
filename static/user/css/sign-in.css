@@ -1,0 +1,97 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+ul {
+    list-style-type: none;
+}
+
+body {
+    height: 100vh;
+}
+
+::-webkit-scrollbar {
+    width: 12px; /* Ширина вертикальной полосы прокрутки */
+    height: 12px; /* Высота горизонтальной полосы прокрутки */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #5fdbd3; /* Цвет ползунка */
+    border-radius: 10px; /* Закругление углов ползунка */
+}
+
+::-webkit-scrollbar-track {
+    background-color: #45a7a0; /* Цвет дорожки */
+    border-radius: 10px; /* Закругление углов дорожки */
+}
+
+a {
+    text-decoration: none;
+}
+
+.menu .hidden {
+    display: none;
+}
+
+/* MAIN */
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: #232e3a;
+}
+
+.menu {
+    display: grid;
+    grid-template-rows: repeat(10, 3rem);
+    background-color: #4b6177;
+    height: 480px;
+    width: 320px;
+    border: 2px solid #5de7de;
+    border-radius: 15px;
+}
+
+.menu label {
+    color: #66FCF1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+.menu input {
+    width: 90%;
+    justify-self: center;
+    border: 2px solid #66FCF1;
+    border-radius: 15px;
+}
+
+.menu button {
+    grid-row-start: 8;
+    width: 90%;
+    justify-self: center;
+    border: 2px solid #66FCF1;
+    border-radius: 15px;
+    color: #339791;
+    font-weight: bold;
+}
+
+.menu button:hover {
+    cursor: pointer;
+}
+
+.menu a {
+    color: #66FCF1;
+    font-weight: bold;
+    grid-row-start: 10;
+    text-align: center;
+}
+
+.menu a:hover {
+    text-decoration: underline;
+}
+
+/*  MEDIA QUERIES */

@@ -11,7 +11,7 @@
 <body>
     <div class="user-menu none">
         <ul class="category-menu-list">
-            <li class="category-menu-item"><a href="#">Your products</a></li>
+            <li class="category-menu-item"><a href="{% url "main:user_products" %}">Your products</a></li>
             <li class="category-menu-item"><a href="#">Profile</a></li>
             <li class="category-menu-item"><a href="#">Top up balance</a></li>
             <li class="category-menu-item"><a href="#">Balance 123 $</a></li>
@@ -39,7 +39,7 @@
         <div class="header">
             <ul class="header-list">
                 <li class="header-item not-image btn-li"><button class="btn"><img class="menu" src="{% static "menu.png" %}" alt="menu"></button></li>
-                <li class="header-item not-image"><a href="#">Your products</a></li>
+                <li class="header-item not-image"><a href="{% url "main:user_products" %}">Your products</a></li>
                 <li class="header-item not-image"><a href="#">Profile</a></li>
                 <li class="header-item not-image"><a href="#">Top up balance</a></li>
                 <li class="header-item not-image"><a href="#">Balance: 123 $</a></li>

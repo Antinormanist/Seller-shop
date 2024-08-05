@@ -1,0 +1,37 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "user/css/sign-in.css" %}">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <input type="hidden" name="" id="cur" value="{% url "user:sign-in" %}">
+    <input type="hidden" name="" id="mail" value="{% url "user:sign-in-mail" %}">
+    <input type="hidden" name="" id="send" value="{% url "main:goods_page" %}">
+    <main>
+        <form method="post" class="menu">
+            {% csrf_token %}
+            <label for="eol">Email or login</label>
+            <input type="text" name="eol" id="eol">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password">
+            <label class="hidden" for="code">Code from email</label>
+            <input class="hidden" type="text" name="code" id="code">
+
+            <button type="submit">Sign in</button>
+            <a href="{% url "user:sign-up" %}">Don't have an account</a>
+        </form>
+    </main>
+
+    <!-- MAKE APPEARING CODE FROM EMAIL IF ALL FIELDS ARE VALID AND RETURN IT TO BACKEND -->
+    <script
+        src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="crossorigin="anonymous">
+    </script>
+    <script src="{% static "user/js/sign-in.js" %}"></script>
+</body>
+</html>

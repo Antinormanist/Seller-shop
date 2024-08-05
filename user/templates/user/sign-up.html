@@ -1,0 +1,43 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "user/css/sign-up.css" %}">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <input type="hidden" name="" id="sign-url" value="{% url "user:sign-up-code" %}">
+    <input type="hidden" name="" id="sign" value="{% url "user:sign-up" %}">
+    <input type="hidden" name="" id="mailurl" value="{% url "user:sign-up-mail" %}">
+    <input type="hidden" name="" id="sendurl" value="{% url "main:goods_page" %}">
+    <main>
+        <form method="post" class="menu">
+            {% csrf_token %}
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email">
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username">
+            <label for="password1">Password</label>
+            <input type="password" name="password1" id="password1">
+            <label for="password2">Repeat password</label>
+            <input type="password" name="password2" id="password2">
+            <label class="hidden" for="hidden">Code from email</label>
+            <input class="hidden" type="text" name="code" id="hidden">
+
+            <button type="submit">Sign up</button>
+            <a href="{% url "user:sign-in" %}">Already have an account</a>
+        </form>
+    </main>
+
+    <!-- MAKE APPEARING CODE FROM EMAIL IF ALL FIELDS ARE VALID AND RETURN IT TO BACKEND -->
+    <script
+        src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="crossorigin="anonymous">
+    </script>
+
+    <script src="{% static "user/js/sign-up.js" %}"></script>
+</body>
+</html>
