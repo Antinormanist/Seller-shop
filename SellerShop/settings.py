@@ -143,6 +143,10 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'dodirfrold@gmail.com'
 EMAIL_HOST_PASSWORD = 'wvcb sqoj hrfy yjcy'
 
+STRIPE_PUBLISHABLE_KEY = 'pk_test_51PPVvRIz2pNq547vdOFfRpIywD6lvQQXdBEbSikEAOCySF0BZEFSrJKqAfH2KhLa9Vf9kwsDR7bjFc1NeYz6D8uR005S5si3tF'
+STRIPE_SECRET_KEY = 'sk_test_51PPVvRIz2pNq547v2H9j9JLc0kfsVjO9MvQJsjguzun59D9lPEYJILUopemB6bnYJKVgNxj4Fy6LZ4Xb6cyfKDWF00z8kfHPHn'
+STRIPE_API_VERSION = '2024-06-20'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 

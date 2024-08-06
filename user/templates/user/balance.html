@@ -1,0 +1,41 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "user/css/balance.css" %}">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <div class="user-menu none">
+        <ul class="category-menu-list">
+            <li class="category-menu-item"><a href="{% url "main:user_products" %}">Your products</a></li>
+            <li class="category-menu-item"><a href="#">Profile</a></li>
+            <li class="category-menu-item"><a href="{% url "user:balance" %}">Balance: {{ request.user.balance }} $</a></li>
+        </ul>
+    </div>
+    <header>
+        <div class="header">
+            <ul class="header-list">
+                <li class="header-item not-image btn-li"><button class="btn"><img class="menu" src="../images/menu.png" alt="menu"></button></li>
+                <li class="header-item not-image"><a href="{% url "main:user_products" %}">Your products</a></li>
+                <li class="header-item not-image"><a href="#">Profile</a></li>
+                <li class="header-item not-image"><a href="{% url "user:balance" %}">Balance: {{ request.user.balance }} $</a></li>
+                <li class="header-item image"><img class="img" src="../images/pfp.png" alt="pfp"></li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        <form class="main" method="post">
+            {% csrf_token %}
+            <input type="number" name="amount">
+            <button>Top-up</button>
+        </form>
+    </main>
+
+    <script src="{% static "user/js/goods_menu.js" %}"></script>
+</body>
+</html>

@@ -1,13 +1,18 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.core.mail import EmailMessage
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth import login, authenticate
 
+import stripe
+
 from .utils import create_token, EMAIL_MESSAGE, AUTHENTICATION_MESSAGE
 from .models import User
 from .forms import UserRegistrationForm
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+stripe.api_version = settings.STRIPE_API_VERSION
 
 # Create your views here.
 def sign_in(request):
@@ -97,6 +102,47 @@ def sign_up_mail(request):
         login(request, user)
         return HttpResponse('<h1>COngrats</h1>')
     return HttpResponse('something is wrong')
+
+
+@login_required
+def balance(request):
+    session_id = request.GET.get('session_id')
+    if session_id:
+        print("session yes")
+        session = stripe.checkout.Session.retrieve(session_id)
+        if session and session['payment_status'] == 'paid':
+            print("balance")
+            request.user.balance += int(request.GET['amount'])
+            request.user.save()
+            return redirect(reverse('user:balance'))
+    elif request.POST:
+        amount = request.POST.get('amount')
+        if amount and amount.isdigit():
+            amount = int(amount)
+            session_data = {
+                'mode': 'payment',
+                'success_url': request.build_absolute_uri(reverse('user:balance')) + '?session_id={CHECKOUT_SESSION_ID}&amount=' + f'{amount}',
+                'cancel_url': request.build_absolute_uri(reverse('user:balance')),
+                'line_items': [{
+                    'price_data': {
+                        'unit_amount': amount * 100,
+                        'currency': 'usd',
+                        'product_data': {
+                            'name': 'Top up balance'
+                        }
+                    },
+                    'quantity': 1
+                }],
+            }
+            
+            session = stripe.checkout.Session.create(**session_data)
+            # TOP UP BALANCE
+            return redirect(session.url, code=303)
+        
+    context = {
+        'title': 'Top up balance'
+    }
+    return render(request, 'user/balance.html', context)
 
 
 @login_required
