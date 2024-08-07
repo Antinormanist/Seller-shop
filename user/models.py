@@ -25,7 +25,13 @@ class Commentary(models.Model):
     
     
 class Chat(models.Model):
-    main_user = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True, related_name='main_us')
-    relate_user = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True, related_name='relate_us')
+    main_user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='main_us')
+    relate_user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='relate_us')
+    comment_user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='comment_us')
+    relate_is_blocked = models.BooleanField(default=False)
+    main_is_blocked = models.BooleanField(default=False)
     comment = models.TextField(max_length=256, default='')
     created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        db_table = 'chat'

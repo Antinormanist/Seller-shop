@@ -14,7 +14,7 @@
             <li class="category-menu-item"><a href="{% url "main:user_products" %}">Your products</a></li>
             <li class="category-menu-item"><a href="{% url "user:profile" %}">Profile</a></li>
             <li class="category-menu-item"><a href="{% url "user:balance" %}">Top up balance</a></li>
-            <li class="category-menu-item"><a href="{% url "user:balance" %}">Balance 123 $</a></li>
+            <li class="category-menu-item"><a href="{% url "user:balance" %}">Balance {{ request.user.balance }} $</a></li>
         </ul>
     </div>
     <header>
@@ -24,7 +24,7 @@
                 <li class="header-item not-image"><a href="{% url "main:user_products" %}">Your products</a></li>
                 <li class="header-item not-image"><a href="{% url "user:profile" %}">Profile</a></li>
                 <li class="header-item not-image"><a href="{% url "user:balance" %}">Top up balance</a></li>
-                <li class="header-item not-image"><a href="{% url "user:balance" %}">Balance: 123 $</a></li>
+                <li class="header-item not-image"><a href="{% url "user:balance" %}">Balance {{ request.user.balance }} $</a></li>
                 <li class="header-item image"><img class="img" src="{{ request.user.image.url }}" alt="pfp"></li>
             </ul>
         </div>
@@ -33,7 +33,7 @@
     <main>
         <div class="main">
             {% for chat in chats %}
-            <a href="#" class="user-chat">
+            <a href="{% url "user:chat-detail" chat.relate_user.id %}" class="user-chat">
                 <img src="{{ chat.relate_user.image.url }}" alt="pfp">
                 <h2>{{ chat.relate_user.username }}</h2>
             </a>

@@ -1,32 +1,3 @@
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-
-// Получаем CSRF-токен и устанавливаем общий обработчик для всех AJAX-запросов
-const csrftoken = getCookie('csrftoken');
-
-$(document).ready(function() {
-    // Устанавливаем CSRF-токен в заголовок каждого AJAX-запроса
-    $.ajaxSetup({
-        beforeSend: function(xhr, settings) {
-            if (!/^http:.*/.test(settings.url) && !/^https:.*/.test(settings.url)) {
-                xhr.setRequestHeader("X-CSRFToken", csrftoken);
-            }
-        }
-    });
-});
-
 const sendLikeUrl = document.querySelector('#sendlikeurl').value
 const sendDislikeUrl = document.querySelector('#senddislikeurl').value
 

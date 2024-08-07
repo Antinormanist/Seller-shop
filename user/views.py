@@ -9,7 +9,7 @@ from django.core.paginator import Paginator
 import stripe
 
 from .utils import create_token, EMAIL_MESSAGE, AUTHENTICATION_MESSAGE, DELETE_MESSAGE
-from .models import User, Commentary
+from .models import User, Commentary, Chat
 from .forms import UserRegistrationForm
 from main.models import Products, Categories
 
@@ -200,10 +200,8 @@ def user_logout(request):
 def like(request):
     id = request.POST.get('comment_id')
     if id:
-        print(123)
         comment = Commentary.objects.get(id=int(id))
         if request.user.username not in comment.took:
-            print(321)
             comment.people_like = comment.people_like + 1
             comment.took.append(request.user.username)
             comment.save()
@@ -214,12 +212,9 @@ def like(request):
 def dislike(request):
     id = request.POST.get('comment_id')
     if id:
-        
-        print(123)
         comment = Commentary.objects.get(id=int(id))
         print(comment)
         if request.user.username not in comment.took:
-            print(321)
             comment.people_dislike = comment.people_dislike + 1
             comment.took.append(request.user.username)
             comment.save()
@@ -254,6 +249,8 @@ def product_add(request):
 @login_required
 def seller_profile(request, seller_id):
     user = User.objects.get(id=seller_id)
+    if user == request.user:
+        return redirect(reverse('user:profile'))
     if request.POST:
         comment = request.POST.get('commentary')
         rate = request.POST.get('rate')
@@ -284,6 +281,50 @@ def seller_profile(request, seller_id):
 @login_required
 def chats(request):
     context = {
-        'title': 'Chats'
+        'title': 'Chats',
+        'chats': Chat.objects.filter(main_user=request.user).distinct('relate_user__username')
     }
     return render(request, 'user/chats.html', context)
+
+
+@login_required
+def chat_detail(request, seller_id):
+    relate = User.objects.get(id=int(seller_id))
+    if request.GET.get('block'):
+        Chat.objects.filter(main_user=request.user, relate_user=relate).update(
+            relate_is_blocked=True
+        )
+        Chat.objects.filter(main_user=relate, relate_user=request.user).update(
+            main_is_blocked=True
+        )
+    if request.GET.get('unblock'):
+        Chat.objects.filter(main_user=request.user, relate_user=relate).update(
+            relate_is_blocked=False
+        )
+        Chat.objects.filter(main_user=relate, relate_user=request.user).update(
+            main_is_blocked=False
+        )
+    
+    if message := request.POST.get('user-message'):
+        if not Chat.objects.filter(main_user=request.user, relate_user=relate).first().relate_is_blocked:
+            Chat.objects.create(
+                main_user=request.user,
+                relate_user=relate,
+                comment=message,
+                comment_user=request.user
+            )
+            Chat.objects.create(
+                main_user=relate,
+                relate_user=request.user,
+                comment=message,
+                comment_user=request.user
+            )
+    a_chats = Chat.objects.filter(main_user=request.user, relate_user=User.objects.get(id=int(seller_id)))
+    context = {
+        'title': 'Chat',
+        'chats': a_chats,
+        'main_blocked': a_chats.first().main_is_blocked,
+        'relate_blocked': a_chats.first().relate_is_blocked,
+        'relate_name': a_chats.first().relate_user.username,
+    }
+    return render(request, 'user/chat_detail.html', context)

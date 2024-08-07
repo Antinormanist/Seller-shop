@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 
 from .models import Products, Categories
 from .utils import q_search
+from user.models import Chat
 
 # Create your views here.
 def welcome(request):
@@ -78,6 +79,20 @@ def product_detail(request, prod_id):
         if request.user == product.seller:
             product_asq.delete()
             return redirect(reverse('main:goods_page'))
+        
+    if request.GET.get('chat'):
+        if not Chat.objects.filter(main_user=request.user, relate_user=product.seller).exists():
+            Chat.objects.create(
+                main_user=request.user,
+                relate_user=product.seller,
+                comment_user=request.user,
+            )
+            Chat.objects.create(
+                main_user=product.seller,
+                relate_user=request.user,
+                comment_user=product.seller,
+            )
+        return redirect(reverse('user:chat-detail', kwargs={'seller_id': product.seller.id}))
             
     has_changes = False
     if name := request.POST.get('name'):

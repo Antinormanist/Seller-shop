@@ -1,0 +1,80 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "user/css/chat_detail.css" %}">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <div class="user-menu none">
+        <ul class="category-menu-list">
+            <li class="category-menu-item"><a href="{% url "main:user_products" %}">Your products</a></li>
+            <li class="category-menu-item"><a href="{% url "user:profile" %}">Profile</a></li>
+            <li class="category-menu-item"><a href="{% url "user:balance" %}">Top up balance</a></li>
+            <li class="category-menu-item"><a href="{% url "user:balance" %}">Balance 123 $</a></li>
+        </ul>
+    </div>
+    <header>
+        <div class="header">
+            <ul class="header-list">
+                <li class="header-item not-image btn-li"><button class="btn"><img class="menu" src="{% static "menu.png" %}" alt="menu"></button></li>
+                <li class="header-item not-image"><a href="{% url "main:user_products" %}">Your products</a></li>
+                <li class="header-item not-image"><a href="{% url "user:profile" %}">Profile</a></li>
+                <li class="header-item not-image"><a href="{% url "user:balance" %}">Top up balance</a></li>
+                <li class="header-item not-image"><a href="{% url "user:balance" %}">Balance: 123 $</a></li>
+                <li class="header-item image"><img class="img" src="{{ request.user.image.url }}" alt="pfp"></li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        <div class="main">
+            <h2>Chat with {{ relate_name }}</h2>
+            <!-- IF NOT BLOCKED -->
+            <!-- IF BLOCKED -->
+            {% if relate_blocked %}
+            <h3>You blocked that user</h3>
+            <a href="?unblock=1">Unblock</a>
+            {% else %}
+            <a href="?block=1">Block</a>
+            {% endif %}
+            <!-- IF NOT BLOCKED -->
+
+            {% comment %} {% for chat in chats %}
+            <div class="{% if request.user == chat.main_user %}left{% else %}right{% endif %}">
+                <p class="message-date">{{ chat.created_at }}</p>
+                <p>{{ chat.comment }}</p>
+            </div>
+            {% endfor %} {% endcomment %}
+            {% for chat in chats %}
+            {% comment %} {% if chat.comment_user == request.user%} {% endcomment %}
+            <div class="{% if chat.comment_user == request.user %}left{% else %}right{% endif %}">
+                <p class="message-date">{{ chat.created_at }}</p>
+                <p>{{ chat.comment }}</p>
+            </div>
+            {% endfor %}
+
+
+            <!-- IF BLOCKED -->
+            {% if main_blocked %}
+                <h3>User blocked you</h3>
+            <!-- IF NOT BLOCKED -->
+            {% else %}
+                <form method='post' style="display: flex; flex-direction: column; align-items: center;">
+                    {% csrf_token %}
+                    <input class="user-message" type="text" name="user-message">
+                    <button class="send-message">send</button>
+                </form>
+            {% endif %}
+        </div>
+    </main>
+    <script
+        src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="crossorigin="anonymous">
+    </script>
+    <script src="{% static "main/js/goods_menu.js" %}"></script>
+</body>
+</html>
