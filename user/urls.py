@@ -16,4 +16,5 @@ urlpatterns = [
     path('email-code/', views.profile_code, name='email-code'),
     path('like/', views.like, name='like'),
     path('dislike/', views.dislike, name='dislike'),
+    path('product-add/', views.product_add, name='product-add')
 ]

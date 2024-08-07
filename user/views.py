@@ -11,6 +11,7 @@ import stripe
 from .utils import create_token, EMAIL_MESSAGE, AUTHENTICATION_MESSAGE, DELETE_MESSAGE
 from .models import User, Commentary
 from .forms import UserRegistrationForm
+from main.models import Products, Categories
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 stripe.api_version = settings.STRIPE_API_VERSION
@@ -218,3 +219,27 @@ def dislike(request):
             comment.save()
             return JsonResponse({'success': True, 'status': 200})
     return JsonResponse({'error': True, 'status': 400})
+
+
+@login_required
+def product_add(request):
+    if request.POST:
+        name = request.POST.get('name')
+        price = request.POST.get('price')
+        description = request.POST.get('description')
+        image = request.FILES.get('image')
+        category = request.POST.get('category')
+        if name and price and price.isdigit() and description and image and category:
+            Products.objects.create(
+                name=name,
+                price=int(price),
+                description=description,
+                image=image,
+                category=Categories.objects.get(name=category),
+                seller=request.user,
+            )
+        
+    context = {
+        'title': 'Product add'
+    }
+    return render(request, 'user/product-add.html', context)

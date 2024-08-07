@@ -67,7 +67,7 @@
                         <h2 class="user-rate">Rate: {{request.user.rates|avg_rate:request.user.rates_amount }}</h2>
                     </div>
                     <div class="btns">
-                        <a class="top-up-balance" href="#">Create product</a>
+                        <a class="top-up-balance" href="{% url "user:product-add" %}">Create product</a>
                         <a class="logout" href="{% url "user:logout" %}">Logout</a>
                         <button class="bio-btn">Change bio</button>
                         <button class="del-btn">Delete account</button>

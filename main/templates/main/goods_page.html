@@ -84,19 +84,10 @@
                     {% for cat in categories %}
                     <li class="cat-item"><a href="{% url "main:goods_page" cat.id %}">{{ cat.name }}</a></li>
                     {% endfor %}
-                    {% comment %} <li class="cat-item"><a href="{% url "main:goods_page" cat.id %}">Devices</a></li>
-                   <li class="cat-item"><a href="{% url "main:goods_page" cat.id %}">Sport</a></li>
-                   <li class="cat-item"><a href="{% url "main:goods_page" cat.id %}">Camping</a></li>
-                   <li class="cat-item"><a href="{% url "main:goods_page" cat.id %}">Goods for home</a></li> 
-                   <li class="cat-item"><a href="{% url "main:goods_page" cat.id %}">Animals</a></li> 
-                   <li class="cat-item"><a href="{% url "main:goods_page" cat.id %}">Hobbies</a></li> 
-                   <li class="cat-item"><a href="{% url "main:goods_page" cat.id %}">Clothes</a></li> 
-                   <li class="cat-item"><a href="{% url "main:goods_page" cat.id %}">Jobs</a></li>  {% endcomment %}
                 </ul>
             </div>
             <div class="products">
                 <div class="seen">
-                    {% comment %} <h2 class="seenh">You have seen</h2> {% endcomment %}
                     <h2 class="seenh">COMPLETE THIS WITH REDIS</h2>
                     <h3 class="arrow-left pag-enabled"><a href="#"><</a></h3>
                     <h3 class="arrow-right"><a href="#">></a></h3>
