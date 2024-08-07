@@ -17,7 +17,7 @@
     <input type="hidden" id="signurl" value="{% url "user:sign-in" %}">
     <div class="user-menu none">
         <ul class="category-menu-list">
-            <li class="category-menu-item"><a href="#">Chats</a></li>
+            <li class="category-menu-item"><a href="{% url "user:chats" %}">Chats</a></li>
             <li class="category-menu-item"><a href="{% url "main:user_products" %}">Your products</a></li>
             <!-- <li class="category-menu-item"><a href="#">Profile</a></li> -->
             <li class="category-menu-item"><a href="{% url "user:balance" %}">Top up balance</a></li>
@@ -28,7 +28,7 @@
         <div class="header">
             <ul class="header-list">
                 <li class="header-item not-image btn-li"><button class="btn"><img class="menu" src="{% static "menu.png" %}" alt="menu"></button></li>
-                <li class="header-item not-image"><a href="#">Chats</a></li>
+                <li class="header-item not-image"><a href="{% url "user:chats" %}">Chats</a></li>
                 <li class="header-item not-image"><a href="{% url "main:user_products" %}">Your products</a></li>
                 <!-- <li class="header-item not-image"><a href="#">Profile</a></li> -->
                 <li class="header-item not-image"><a href="{% url "user:balance" %}">Top up balance</a></li>

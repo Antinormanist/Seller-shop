@@ -18,4 +18,5 @@ urlpatterns = [
     path('dislike/', views.dislike, name='dislike'),
     path('product-add/', views.product_add, name='product-add'),
     path('seller-profile/<int:seller_id>/', views.seller_profile, name='seller-profile'),
+    path('chats/', views.chats, name='chats'),
 ]

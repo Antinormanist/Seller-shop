@@ -12,10 +12,6 @@ class User(AbstractUser):
     # list of rates
     rates = models.IntegerField(default=5)
     rates_amount = models.IntegerField(default=1)
-    
-    
-class Chat(models.Model):
-    pass
 
 
 class Commentary(models.Model):
@@ -26,3 +22,10 @@ class Commentary(models.Model):
     people_like = models.IntegerField(default=0)
     people_dislike = models.IntegerField(default=0)
     took = ArrayField(base_field=models.CharField(max_length=21))
+    
+    
+class Chat(models.Model):
+    main_user = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True, related_name='main_us')
+    relate_user = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True, related_name='relate_us')
+    comment = models.TextField(max_length=256, default='')
+    created_at = models.DateTimeField(auto_now_add=True)

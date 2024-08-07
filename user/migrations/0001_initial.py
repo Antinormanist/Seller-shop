@@ -48,12 +48,12 @@ class Migration(migrations.Migration):
                 ('objects', django.contrib.auth.models.UserManager()),
             ],
         ),
-        migrations.CreateModel(
-            name='Chat',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-            ],
-        ),
+        # migrations.CreateModel(
+        #     name='Chat',
+        #     fields=[
+        #         ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+        #     ],
+        # ),
         migrations.CreateModel(
             name='Commentary',
             fields=[

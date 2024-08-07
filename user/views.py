@@ -279,3 +279,11 @@ def seller_profile(request, seller_id):
         'page_obj': page_obj,
     }
     return render(request, 'user/seller_profile.html', context)
+
+
+@login_required
+def chats(request):
+    context = {
+        'title': 'Chats'
+    }
+    return render(request, 'user/chats.html', context)
