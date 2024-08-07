@@ -200,8 +200,10 @@ def user_logout(request):
 def like(request):
     id = request.POST.get('comment_id')
     if id:
+        print(123)
         comment = Commentary.objects.get(id=int(id))
         if request.user.username not in comment.took:
+            print(321)
             comment.people_like = comment.people_like + 1
             comment.took.append(request.user.username)
             comment.save()
@@ -212,8 +214,12 @@ def like(request):
 def dislike(request):
     id = request.POST.get('comment_id')
     if id:
+        
+        print(123)
         comment = Commentary.objects.get(id=int(id))
+        print(comment)
         if request.user.username not in comment.took:
+            print(321)
             comment.people_dislike = comment.people_dislike + 1
             comment.took.append(request.user.username)
             comment.save()
@@ -243,3 +249,33 @@ def product_add(request):
         'title': 'Product add'
     }
     return render(request, 'user/product-add.html', context)
+
+
+@login_required
+def seller_profile(request, seller_id):
+    user = User.objects.get(id=seller_id)
+    if request.POST:
+        comment = request.POST.get('commentary')
+        rate = request.POST.get('rate')
+        if comment and rate:
+            Commentary.objects.create(
+                comment_user=request.user,
+                relate_user=user,
+                rate=int(rate),
+                comment=comment,
+                took=[request.user.username]
+            )
+            user.rates += int(rate)
+            user.rates_amount += 1
+            user.save()
+    
+    page = request.GET.get('page', 1)
+    paginator = Paginator(Commentary.objects.filter(relate_user=user), 5)
+    page_obj = paginator.get_page(page)
+    
+    context = {
+        'title': 'Seller\'s profile',
+        'user': user,
+        'page_obj': page_obj,
+    }
+    return render(request, 'user/seller_profile.html', context)

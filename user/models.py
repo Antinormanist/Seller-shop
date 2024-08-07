@@ -25,4 +25,4 @@ class Commentary(models.Model):
     comment = models.TextField(max_length=999)
     people_like = models.IntegerField(default=0)
     people_dislike = models.IntegerField(default=0)
-    took = ArrayField(base_field=models.CharField(max_length=21), null=True, blank=True)
+    took = ArrayField(base_field=models.CharField(max_length=21))

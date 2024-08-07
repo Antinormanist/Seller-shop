@@ -61,7 +61,7 @@
                 <h3>{{ prod.price }} $</h3>
                 <p>{{ prod.description }}</p>
                 <!-- ONLY 7 CHARACTERS IN NAME ARE SHOWN OTHERS ARE HIDDEN -->
-                <h3 class="h3"><a href="#">@{{ prod.seller.username|truncatechars:7 }} rate: {{ rate }}</a></h3>
+                <h3 class="h3"><a href="{% url "user:seller-profile" prod.seller.id %}">@{{ prod.seller.username|truncatechars:7 }} rate: {{ rate }}</a></h3>
                 {% comment %} <h3 class="h3"><a href="#">@Vadik33. rate: 3.6</a></h3> {% endcomment %}
                 {% if request.user == prod.seller %}
                 <div class="btns">

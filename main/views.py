@@ -32,23 +32,23 @@ def goods_page(request, cat_id=None):
         search = request.POST.get('search')
         if search:
             q = q_search(search)
-            products.filter(q)
+            products = products.filter(q)
             
     if request.method == 'GET':
         if (price := request.GET.get('price')):
             if price == 'asc':
-                products.order_by('price')
+                products = products.order_by('price')
             else:
-                products.order_by('-price')
+                products = products.order_by('-price')
         if (date := request.GET.get('date')):
             if date == 'asc':
-                products.order_by('created_at')
+                products = products.order_by('created_at')
             else:
-                products.order_by('-created_at')
+                products = products.order_by('-created_at')
         if (price := request.GET.get('first-range-price')):
-            products.filter(price__gte=int(price))
+            products = products.filter(price__gte=int(price))
         if (price := request.GET.get('second-range-price')):
-            products.filter(price__lte=int(price))
+            products = products.filter(price__lte=int(price))
     
     context = {
         'title': 'Goods',
