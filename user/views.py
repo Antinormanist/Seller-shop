@@ -3,12 +3,13 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.core.mail import EmailMessage
 from django.http import JsonResponse, HttpResponse
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
+from django.core.paginator import Paginator
 
 import stripe
 
-from .utils import create_token, EMAIL_MESSAGE, AUTHENTICATION_MESSAGE
-from .models import User
+from .utils import create_token, EMAIL_MESSAGE, AUTHENTICATION_MESSAGE, DELETE_MESSAGE
+from .models import User, Commentary
 from .forms import UserRegistrationForm
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -147,4 +148,73 @@ def balance(request):
 
 @login_required
 def profile(request):
-    pass
+    page = int(request.GET.get('page', 1))
+    paginator = Paginator(Commentary.objects.filter(relate_user=request.user), 5)
+    page_obj = paginator.get_page(page)
+    
+    context = {
+        'title': 'Profile',
+        'page_obj': page_obj,
+    }
+    
+    if request.POST:
+        name = request.POST.get('bio-name')
+        description = request.POST.get('bio-desc')
+        avatar = request.FILES.get('bio-ava')
+        if name and description and avatar:
+            user = User.objects.filter(username=request.user.username)
+            request.user.username = name
+            request.user.description = description
+            request.user.image = avatar
+            request.user.save()
+            request.user.refresh_from_db()
+    return render(request, 'user/profile.html', context)
+
+
+def profile_code(request):
+    token = create_token()
+    if request.POST.get('success'):
+        if request.user.is_authenticated:
+            request.user.delete()
+        return JsonResponse({'success': True, 'status': 200})
+        
+    if request.POST.get('need_code'):
+        email = EmailMessage(
+            'Deletion and account on seller shop',
+            DELETE_MESSAGE.format(username=request.user.username, code=token),
+            settings.EMAIL_HOST_USER,
+            [request.user.email]
+        )
+        email.fail_silently = False
+        email.send()
+        return JsonResponse({'code': token})
+    return JsonResponse({'error': True})
+
+
+def user_logout(request):
+    logout(request)
+    return redirect(reverse('main:welcome'))
+
+
+def like(request):
+    id = request.POST.get('comment_id')
+    if id:
+        comment = Commentary.objects.get(id=int(id))
+        if request.user.username not in comment.took:
+            comment.people_like = comment.people_like + 1
+            comment.took.append(request.user.username)
+            comment.save()
+            return JsonResponse({'success': True, 'status': 200})
+    return JsonResponse({'error': True, 'status': 400})
+
+
+def dislike(request):
+    id = request.POST.get('comment_id')
+    if id:
+        comment = Commentary.objects.get(id=int(id))
+        if request.user.username not in comment.took:
+            comment.people_dislike = comment.people_dislike + 1
+            comment.took.append(request.user.username)
+            comment.save()
+            return JsonResponse({'success': True, 'status': 200})
+    return JsonResponse({'error': True, 'status': 400})

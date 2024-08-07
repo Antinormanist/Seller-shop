@@ -10,5 +10,10 @@ urlpatterns = [
     path('sign-up/', views.sign_up, name='sign-up'),
     path('sign-up-code/', views.sign_up_code, name='sign-up-code'),
     path('sign-up-mail/', views.sign_up_mail, name='sign-up-mail'),
-    path('balance/', views.balance, name='balance')
+    path('balance/', views.balance, name='balance'),
+    path('logout/', views.user_logout, name='logout'),
+    path('profile/', views.profile, name='profile'),
+    path('email-code/', views.profile_code, name='email-code'),
+    path('like/', views.like, name='like'),
+    path('dislike/', views.dislike, name='dislike'),
 ]

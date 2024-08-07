@@ -12,7 +12,7 @@
     <div class="user-menu none">
         <ul class="category-menu-list">
             <li class="category-menu-item"><a href="{% url "main:goods_page" %}">Products</a></li>
-            <li class="category-menu-item"><a href="#">Profile</a></li>
+            <li class="category-menu-item"><a href="{% url "user:profile" %}">Profile</a></li>
             <li class="category-menu-item"><a href="{% url "user:balance" %}">Top up balance</a></li>
             <li class="category-menu-item"><a href="{% url "user:balance" %}">Balance {{ request.user.balance }} $</a></li>
         </ul>
@@ -23,10 +23,10 @@
             <ul class="header-list">
                 <li class="header-item not-image btn-li"><button class="btn"><img class="menu" src="{% static "menu.png" %}" alt="menu"></button></li>
                 <li class="header-item not-image"><a href="{% url "main:goods_page" %}">Products</a></li>
-                <li class="header-item not-image"><a href="#">Profile</a></li>
+                <li class="header-item not-image"><a href="{% url "user:profile" %}">Profile</a></li>
                 <li class="header-item not-image"><a href="{% url "user:balance" %}">Top up balance</a></li>
                 <li class="header-item not-image"><a href="{% url "user:balance" %}">Balance: {{ request.user.balance }} $</a></li>
-                <li class="header-item image"><img class="img" src="../images/pfp.png" alt="pfp"></li>
+                <li class="header-item image"><img class="img" src="{{ request.user.image.url }}" alt="pfp"></li>
             </ul>
         </div>
     </header>

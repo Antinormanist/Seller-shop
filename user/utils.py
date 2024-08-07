@@ -16,6 +16,12 @@ Just write this code - {code} - in 'code for email' field.
 If it wasn't you just ignore this message.
 Have a good day!
 """
+DELETE_MESSAGE = """
+Hey {username}!
+You're deletining on seller shop
+Just write this code - {code} - in 'code for email' field
+If it wasn't you just know someone is on your account
+Have a good day!"""
 
 def create_token():
     '''

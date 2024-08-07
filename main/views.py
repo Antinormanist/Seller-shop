@@ -6,6 +6,8 @@ from .utils import q_search
 
 # Create your views here.
 def welcome(request):
+    if request.user.is_authenticated:
+        return redirect(reverse('user:profile'))
     context = {
         'title': 'Welcome',
     }
@@ -66,9 +68,11 @@ def product_detail(request, prod_id):
         else:
             if request.user.balance >= product.price:
                 request.user.balance -= product.price
+                request.user.save()
                 product.seller.balance += product.price
-                product.delete
-                return redirect(revevrse('main:goods_page'))
+                product.seller.save()
+                product_asq.delete()
+                return redirect(reverse('main:goods_page'))
             
     if request.GET.get('del'):
         if request.user == product.seller:

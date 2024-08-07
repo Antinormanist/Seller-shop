@@ -83,8 +83,7 @@ form.addEventListener('submit', function(event) {
                     }
                 },
                 error: function() {
-                    // window.location = curUrl
-                    console.log(111)
+                    window.location = curUrl
                 }
             })
         }

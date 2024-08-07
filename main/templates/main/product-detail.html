@@ -12,7 +12,7 @@
     <div class="user-menu none">
         <ul class="category-menu-list">
             <li class="category-menu-item"><a href="{% url "main:goods_page" %}">Products</a></li>
-            <li class="category-menu-item"><a href="#">Profile</a></li>
+            <li class="category-menu-item"><a href="{% url "user:profile" %}">Profile</a></li>
             <li class="category-menu-item"><a href="{% url "user:balance" %}">Top up balance</a></li>
             <li class="category-menu-item"><a href="{% url "user:balance" %}">Balance: {{ request.user.balance }} $</a></li>
         </ul>
@@ -41,10 +41,10 @@
             <ul class="header-list">
                 <li class="header-item not-image btn-li"><button class="btn"><img class="menu" src="{% static "menu.png" %}" alt="menu"></button></li>
                 <li class="header-item not-image"><a href="{% url "main:goods_page" %}">Products</a></li>
-                <li class="header-item not-image"><a href="#">Profile</a></li>
+                <li class="header-item not-image"><a href="{% url "user:profile" %}">Profile</a></li>
                 <li class="header-item not-image"><a href="{% url "user:balance" %}">Top up balance</a></li>
                 <li class="header-item not-image"><a href="{% url "user:balance" %}">Balance: {{ request.user.balance }} $</a></li>
-                <li class="header-item image"><img class="img" src="../images/pfp.png" alt="pfp"></li>
+                <li class="header-item image"><img class="img" src="{{ request.user.image.url }}" alt="pfp"></li>
             </ul>
         </div>
     </header>
@@ -61,7 +61,7 @@
                 <h3>{{ prod.price }} $</h3>
                 <p>{{ prod.description }}</p>
                 <!-- ONLY 7 CHARACTERS IN NAME ARE SHOWN OTHERS ARE HIDDEN -->
-                <h3 class="h3"><a href="#">@{{ prod.seller.username }} rate: {{ rate }}</a></h3>
+                <h3 class="h3"><a href="#">@{{ prod.seller.username|truncatechars:7 }} rate: {{ rate }}</a></h3>
                 {% comment %} <h3 class="h3"><a href="#">@Vadik33. rate: 3.6</a></h3> {% endcomment %}
                 {% if request.user == prod.seller %}
                 <div class="btns">

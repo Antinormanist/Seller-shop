@@ -1,0 +1,135 @@
+{% load filters %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "user/css/profile.css" %}">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <input type="hidden" id="sendlikeurl" value="{% url "user:like" %}">
+    <input type="hidden" id="senddislikeurl" value="{% url "user:dislike" %}">
+    <input type="hidden" id="emailurl" value="{% url "user:email-code" %}">
+    <input type="hidden" id="cururl" value="{% url "user:profile" %}">
+    <input type="hidden" id="signurl" value="{% url "user:sign-in" %}">
+    <div class="user-menu none">
+        <ul class="category-menu-list">
+            <li class="category-menu-item"><a href="#">Chats</a></li>
+            <li class="category-menu-item"><a href="{% url "main:user_products" %}">Your products</a></li>
+            <!-- <li class="category-menu-item"><a href="#">Profile</a></li> -->
+            <li class="category-menu-item"><a href="{% url "user:balance" %}">Top up balance</a></li>
+            <li class="category-menu-item"><a href="{% url "user:balance" %}">Balance: {{ request.user.balance }} $</a></li>
+        </ul>
+    </div>
+    <header>
+        <div class="header">
+            <ul class="header-list">
+                <li class="header-item not-image btn-li"><button class="btn"><img class="menu" src="{% static "menu.png" %}" alt="menu"></button></li>
+                <li class="header-item not-image"><a href="#">Chats</a></li>
+                <li class="header-item not-image"><a href="{% url "main:user_products" %}">Your products</a></li>
+                <!-- <li class="header-item not-image"><a href="#">Profile</a></li> -->
+                <li class="header-item not-image"><a href="{% url "user:balance" %}">Top up balance</a></li>
+                <li class="header-item not-image"><a href="{% url "user:balance" %}">Balance: {{ request.user.balance }} $</a></li>
+                <li class="header-item image"><img class="img" src="{{ request.user.image.url }}" alt="pfp"></li>
+            </ul>
+        </div>
+    </header>
+
+
+    <div class="sure-menu none">
+        <h2>Are you sure?</h2>
+        <label class="label-s none" for="code">Write a code we sent on your email</label>
+        <input class="input-s none" type="text" name="code" id="code">
+        <button class="sure-btn">I am</button>
+    </div>
+    <form class="bio-menu none" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="bio-name">Name</label>
+        <input class="bio-menu-inp1" type="text" name="bio-name" id="bio-name">
+        <label for="bio-desc">Description</label>
+        <input class="bio-menu-inp2" type="text" name="bio-desc" id="bio-desc">
+        <label for="bio-ava">Avatar</label>
+        <input class="avatar-bio-menu" type="file" name="bio-ava" id="bio-ava">
+        <button class="bio-inside-btn">Change</button>
+    </form>
+    <main>
+        <div class="main">
+            <div class="prof">
+                <div class="bio">
+                    <img class="avatar" src="{{ request.user.image.url }}" alt="Avatar">
+                    <div class="general">
+                        <!-- MAXIMUM IS 21 CHARACTER IN NAME -->
+                        <h2 class="user-name">{{ request.user.username }}</h2>
+                        <p class="bio-desc">{{ request.user.description }}</p>
+                        <h2 class="user-rate">Rate: {{request.user.rates|avg_rate:request.user.rates_amount }}</h2>
+                    </div>
+                    <div class="btns">
+                        <a class="top-up-balance" href="#">Create product</a>
+                        <a class="logout" href="{% url "user:logout" %}">Logout</a>
+                        <button class="bio-btn">Change bio</button>
+                        <button class="del-btn">Delete account</button>
+                    </div>
+                </div>
+                <div class="views">
+                    <div class="commentaries">
+                        <!-- FIVE COMMENTARIES IN ONE PAGE -->
+                        {% for comment in page_obj %}
+                        <div class="commentary">
+                            <input class="seller_id comment-id" type="hidden" value="{{ comment.id }}">
+                            {% if comment.comment_user%}
+                            <h2 class="view-user-name">{{ comment.comment_user.username }}</h2>
+                            {% else %}
+                            <h2 class="view-user-name">Deleted user</h2>
+                            {% endif %}
+                            <h3 class="view-user-rate">rate the person chose: {{ comment.rate }}</h3>
+                            <p class="view-desc">{{ comment.comment }}</p>
+                            <p class="people-like">{{ comment.people_like }} people like this commentary</p>
+                            <p class="people-dislike">{{ comment.people_dislike }} people don't like this commentary</p>
+                            <div class="likes">
+                                <button class="like"><img src="{% static "like.png" %}" alt="like"></button>
+                                <button class="dislike"><img src="{% static "dislike.png" %}" alt="dislike"></button>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <div class="paginator">
+                            {% if page_obj.has_previous %}
+                            <a href="?page={{ page_obj.previous_page_number }}"><</a>
+                            {% else %}
+                            <a class="unenabled" href="#"><</a>
+                            {% endif %}
+
+                            {% for page_number in page_obj.paginator.page_range %}
+                                {% if page_number >= page_obj.number|add:"-1" and page_number <= page_obj.number|add:"1" %}
+                                    {% if page_number == page_obj.number %}
+                                        <a class="pag-a current" href="?page={{ page_number }}">{{ page_number }}</a>
+                                    {% else %}
+                                        <a class="pag-a" href="?page={{ page_number }}">{{ page_number }}</a>
+                                    {% endif %}
+                                {% endif%}
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}">></a>
+                            {% else %}
+                            <a class="unenabled" href="#">></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script
+        src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="crossorigin="anonymous">
+    </script>
+    <script src="{% static "main/js/goods_menu.js" %}"></script>
+    <script src="{% static "user/js/profile-delete.js" %}"></script>
+    <script src="{% static "user/js/profile-bio.js" %}"></script>
+    <script src="{% static "user/js/likordis.js" %}"></script>
+</body>
+</html>

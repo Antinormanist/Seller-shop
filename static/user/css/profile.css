@@ -1,0 +1,430 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: grid;
+    min-height: 100vh;
+    max-height: 1950px;
+    grid-template-columns: 100%;
+    grid-template-rows: 4% 96%;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+::-webkit-scrollbar {
+    width: 12px; /* Ширина вертикальной полосы прокрутки */
+    height: 12px; /* Высота горизонтальной полосы прокрутки */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #5fdbd3; /* Цвет ползунка */
+    border-radius: 10px; /* Закругление углов ползунка */
+}
+
+::-webkit-scrollbar-track {
+    background-color: #45a7a0; /* Цвет дорожки */
+    border-radius: 10px; /* Закругление углов дорожки */
+}
+
+.products .seen .pag-enabled a {
+    color: #418883;
+}
+
+.products .seen .pag-enabled a:hover {
+    text-decoration: none;
+    cursor: default;
+}
+
+ul {
+    list-style-type: none;
+}
+
+.center {
+    display: flex;
+    align-items: center;
+}
+
+a {
+    text-decoration: none;
+}
+
+.paginator .unenabled {
+    color: #4ab4ad;
+}
+
+.paginator .unenabled:hover {
+    text-decoration: none;
+    cursor: default;
+}
+
+.paginator .current {
+    border: 2px solid #1a6d67;
+}
+
+.paginator .current:hover {
+    text-decoration: none;
+    cursor: default;
+}
+
+.hidden {
+    display: none;
+}
+
+.none {
+    display: none;
+}
+
+/* HEADER */
+
+.header {
+    height: 100%;
+    justify-content: space-between;
+    background-color: #110918;
+}
+
+.header-list {
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.header-item {
+    margin-right: 7rem;
+}
+
+.img {
+    height: 100%;
+    border-radius: 25%;
+}
+
+.image {
+    border: 2px solid #66FCF1;
+    border-radius: 25%;
+}
+
+.not-image {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+}
+
+.not-image a {
+    color: #66FCF1;
+}
+
+.not-image a:hover {
+    text-decoration: underline;
+}
+
+.btn {
+    height: 100%;
+    border: 2px solid #66FCF1;
+    border-radius: 15px;
+}
+
+.btn-li {
+    display: none;
+}
+
+.btn:hover {
+    cursor: pointer;
+}
+
+.menu {
+    height: 100%;
+}
+
+
+.user-menu {
+    position: absolute;
+    left: 50%;
+    top: 20%;
+    height: 260px;
+    width: 135px;
+    background-color: #466d9c;
+    border: 2px solid #66FCF1;
+    border-radius: 15px;
+    padding: 5px;
+}
+
+.category-menu-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.category-menu-item {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.category-menu-item a {
+    color: #66FCF1;
+    font-size: 1.5rem;
+}
+
+.category-menu-item a:hover {
+    text-decoration: underline;
+}
+
+body .none {
+    display: none;
+}
+
+/* MAIN */
+
+.main {
+    height: 100%;
+    background-color: #1F2833;
+    display: flex;
+    justify-content: center;
+}
+
+.prof {
+    width: 75%;
+    background-color: #18222e;
+    
+}
+
+.bio {
+    display: grid;
+    grid-template-columns: 30% 70%;
+    grid-template-rows: 80% 20%;
+}
+
+.avatar {
+    height: 100%;
+    width: 100%;
+}
+
+.general {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #66FCF1;
+}
+
+.bio-desc {
+    height: 250px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.btns {
+    grid-column: 1/3;
+    font-size: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btns a {
+    color: #66FCF1;
+}
+
+.btns a:hover {
+    text-decoration: underline;
+}
+
+.btns button {
+    height: 80%;
+    border: 2px solid #66FCF1;
+    border-radius: 15px;
+    font-size: 2rem;
+}
+
+.paginator {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    font-size: 2rem;
+    color: #66FCF1;
+}
+
+.paginator a {
+    color: #66FCF1;
+    margin: 0 4px;
+}
+
+.paginator a:hover {
+    text-decoration: underline;
+}
+
+.pag-a {
+    text-align: center;
+    width: 48px;
+    border: 2px solid #59d4cc;
+}
+
+.commentary {
+    background-color: #4b8884;
+    max-height: 300px;
+}
+
+.view-user-name, .view-user-rate, .view-desc {
+    font-weight: bold;
+    border-bottom: 2px solid rgb(207, 207, 207);
+    margin-top: 8px;
+}
+
+.view-desc {
+    max-height: 100px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.likes {
+    height: 48px;
+}
+
+.likes button {
+    height: 100%;
+}
+
+.likes button img {
+    height: 100%;
+}
+
+
+/* MENUS */
+
+.sure-menu {
+    position: absolute;
+    top: 30%;
+    left: 40%;
+    min-height: 100px;
+    max-height: 200px;
+    width: 300px;
+    background-color: #4eaaa4;
+    border: 2px solid #66FCF1;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.sure-menu h2, .sure-menu label {
+    color: #57fff4;
+    font-weight: bold;
+    margin-top: 4px;
+    margin-bottom: 8px;
+}
+
+.sure-menu button {
+    width: 75px;
+    background-color: #56d3cb;
+    border: 2px solid #66FCF1;
+    border-radius: 15px;
+    color: #3efff2;
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin: 8px 0;
+}
+
+.sure-menu input {
+    border: 2px solid #66FCF1;
+    border-radius: 15px;
+}
+
+.bio-menu {
+    position: absolute;
+    top: 30%;
+    left: 40%;
+    height: 225px;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #4eaaa4;
+    border: 2px solid #66FCF1;
+    border-radius: 15px;
+}
+
+.bio-menu label {
+    color: #66FCF1;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.bio-menu input {
+    border: 2px solid #66FCF1;
+    border-radius: 15px;
+}
+
+.bio-menu input:nth-child(4) {
+    margin-bottom: 1.5rem;
+}
+
+.bio-menu button {
+    border: 2px solid #66FCF1;
+    border-radius: 15px;
+    width: 100px;
+}
+
+.bio-menu .avatar-bio-menu {
+    border: none;
+    border-radius: 0;
+    width: 100%;
+}
+
+/* MEDIA QUERIES */
+@media screen and (max-width: 1200px) {
+    .header-item {
+        margin-right: 2rem;
+    }
+}
+
+@media screen and (max-width: 938px) {
+    .header-item {
+        display: none;
+    }
+
+    .btn-li {
+        display: block;
+    }
+
+    .btns {
+        font-size: 1rem;
+    }
+
+    .btns button {
+        font-size: 1rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .avatar {
+        display: none;
+    }
+
+    .general {
+        grid-column: 1/3;
+    }
+}
+
+@media screen and (max-width: 508px) {
+    .sure-menu {
+        left: 5%;
+    }
+}
+
+@media screen and (max-width: 453px) {
+    .btns {
+        display: grid;
+        grid-template-columns: 50% 50%;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .prof {
+        width: 100%;
+    }
+
+    .bio-menu {
+        left: 10%;
+    }
+}

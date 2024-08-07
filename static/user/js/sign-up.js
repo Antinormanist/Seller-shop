@@ -164,7 +164,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 },
                 error: function(xhr) {
-                    console.error(xhr.responseText);  // Логируем ошибку
+                    window.location = curUrl
                 }
             });
         }
