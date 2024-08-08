@@ -159,6 +159,10 @@ CACHES = {
     }
 }
 
+CELERY_BROKER_URL = 'redis://localhost:6379/3'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/3'
+CELERY_TIMEZONE = 'Europe/Moscow'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

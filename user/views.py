@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
-from django.core.mail import EmailMessage
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth import login, authenticate, logout
 from django.core.paginator import Paginator
@@ -13,6 +12,7 @@ from .utils import create_token, EMAIL_MESSAGE, AUTHENTICATION_MESSAGE, DELETE_M
 from .models import User, Commentary, Chat
 from .forms import UserRegistrationForm
 from main.models import Products, Categories
+from .tasks import send_mail
 
 REDIS_EMAIL_KEY = 'email-key-for-id-{id}'
 
@@ -63,21 +63,14 @@ def sign_in_mail(request):
                 login(request, user)
                 return JsonResponse({'cache': True, 'status': 200})
             
-            # SEND THIS TASK TO CELERY
-            
-            email = EmailMessage(
-                'Authentication on seller shop',
-                AUTHENTICATION_MESSAGE.format(username=user, code=token),
-                settings.EMAIL_HOST_USER,
-                [user.email]
+            send_mail.delay_on_commit(
+                head='Authentication on seller shop',
+                body=AUTHENTICATION_MESSAGE.format(username=user, code=token),
+                sender=settings.EMAIL_HOST_USER,
+                getters=[user.email]
             )
-            email.fail_silently = False
-            email.send()
-            
             
             return JsonResponse({'code': token})
-            # login(request, user)
-            return JsonResponse({'success': 1, 'status': 200})
     return JsonResponse({'status': 400, 'error': 1})
 
 def sign_up(request):
@@ -96,19 +89,17 @@ def sign_up_code(request):
             'password1': request.POST.get('password1'),
             'password2': request.POST.get('password2'), 
         }
+        if User.objects.filter(email=data['email']).exists():
+            return JsonResponse({'status': 400})
         form = UserRegistrationForm(data)
         if form.is_valid():
             
-            # SEND THIS TASK TO CELERY
-            email = EmailMessage(
-                'Registration on seller shop',
-                EMAIL_MESSAGE.format(username=request.POST['username'], code=token),
-                settings.EMAIL_HOST_USER,
-                [request.POST['email']],
+            send_mail.delay_on_commit(
+                head='Registration on seller shop',
+                body=EMAIL_MESSAGE.format(username=request.POST['username'], code=token),
+                sender=settings.EMAIL_HOST_USER,
+                getters=[request.POST['email']]
             )
-            
-            email.fail_silently = False
-            email.send()
             
             return JsonResponse({'code': token, 'status': 200})
     return JsonResponse({'hello': 1})
@@ -198,14 +189,15 @@ def profile_code(request):
         return JsonResponse({'success': True, 'status': 200})
         
     if request.POST.get('need_code'):
-        email = EmailMessage(
-            'Deletion and account on seller shop',
-            DELETE_MESSAGE.format(username=request.user.username, code=token),
-            settings.EMAIL_HOST_USER,
-            [request.user.email]
+        
+        # CONTINUE WITH CELERY
+        send_mail.delay_on_commit(
+            head='Deletion and account on seller shop',
+            body=DELETE_MESSAGE.format(username=request.user.username, code=token),
+            sender=settings.EMAIL_HOST_USER,
+            getters=[request.user.email]
         )
-        email.fail_silently = False
-        email.send()
+        
         return JsonResponse({'code': token})
     return JsonResponse({'error': True})
 

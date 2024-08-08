@@ -157,6 +157,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 processData: false, // Обязательно отключите обработку данных
                 contentType: false, // Обязательно отключите заголовок Content-Type
                 success: function(response) {
+                    if (response.status === 400) {
+                        window.location = curUrl
+                    }
                     code = response.code;
                     if (label.classList.contains('hidden')) {
                         label.classList.remove('hidden');
@@ -164,7 +167,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 },
                 error: function(xhr) {
-                    window.location = curUrl
+                    console.log(xhr)
+                    // window.location = curUrl
                 }
             });
         }
