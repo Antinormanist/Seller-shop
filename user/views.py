@@ -5,6 +5,7 @@ from django.core.mail import EmailMessage
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth import login, authenticate, logout
 from django.core.paginator import Paginator
+from django.core.cache import cache
 
 import stripe
 
@@ -12,6 +13,8 @@ from .utils import create_token, EMAIL_MESSAGE, AUTHENTICATION_MESSAGE, DELETE_M
 from .models import User, Commentary, Chat
 from .forms import UserRegistrationForm
 from main.models import Products, Categories
+
+REDIS_EMAIL_KEY = 'email-key-for-id-{id}'
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 stripe.api_version = settings.STRIPE_API_VERSION
@@ -39,7 +42,9 @@ def sign_in_mail(request):
                 username = username.username
         user = authenticate(username=username, password=password)
         if user:
+            cache.set(REDIS_EMAIL_KEY.format(id=user.id), 'exists', timeout=60 * 60 * 24 * 7)
             login(request, user)
+            return JsonResponse({'success': 1, 'status': 200})
         
     else:
         eol = request.POST.get('eol')
@@ -54,6 +59,12 @@ def sign_in_mail(request):
                 username = username.username
         user = authenticate(username=username, password=password)
         if user:
+            if cache.get(REDIS_EMAIL_KEY.format(id=user.id)):
+                login(request, user)
+                return JsonResponse({'cache': True, 'status': 200})
+            
+            # SEND THIS TASK TO CELERY
+            
             email = EmailMessage(
                 'Authentication on seller shop',
                 AUTHENTICATION_MESSAGE.format(username=user, code=token),
@@ -62,9 +73,12 @@ def sign_in_mail(request):
             )
             email.fail_silently = False
             email.send()
+            
+            
             return JsonResponse({'code': token})
             # login(request, user)
-    return JsonResponse({'success': 1, 'status': 200})
+            return JsonResponse({'success': 1, 'status': 200})
+    return JsonResponse({'status': 400, 'error': 1})
 
 def sign_up(request):
     context = {
@@ -84,6 +98,8 @@ def sign_up_code(request):
         }
         form = UserRegistrationForm(data)
         if form.is_valid():
+            
+            # SEND THIS TASK TO CELERY
             email = EmailMessage(
                 'Registration on seller shop',
                 EMAIL_MESSAGE.format(username=request.POST['username'], code=token),
@@ -93,6 +109,7 @@ def sign_up_code(request):
             
             email.fail_silently = False
             email.send()
+            
             return JsonResponse({'code': token, 'status': 200})
     return JsonResponse({'hello': 1})
 
@@ -101,6 +118,7 @@ def sign_up_mail(request):
     form = UserRegistrationForm(request.POST)
     if form.is_valid():
         user = form.save()
+        cache.set(REDIS_EMAIL_KEY.format(id=user.id), 'exists', timeout=60 * 60 * 24 * 7)
         login(request, user)
         return HttpResponse('<h1>COngrats</h1>')
     return HttpResponse('something is wrong')

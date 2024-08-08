@@ -147,6 +147,19 @@ STRIPE_PUBLISHABLE_KEY = 'pk_test_51PPVvRIz2pNq547vdOFfRpIywD6lvQQXdBEbSikEAOCyS
 STRIPE_SECRET_KEY = 'sk_test_51PPVvRIz2pNq547v2H9j9JLc0kfsVjO9MvQJsjguzun59D9lPEYJILUopemB6bnYJKVgNxj4Fy6LZ4Xb6cyfKDWF00z8kfHPHn'
 STRIPE_API_VERSION = '2024-06-20'
 
+REDIS_DB = 3
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379",
+        "OPTIONS": {
+            "db": str(REDIS_DB)
+        }
+    }
+}
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 

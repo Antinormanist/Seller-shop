@@ -88,19 +88,31 @@
             </div>
             <div class="products">
                 <div class="seen">
-                    <h2 class="seenh">COMPLETE THIS WITH REDIS</h2>
+                    <h2 class="seenh">You have seen</h2>
+                    {% if page_obj.has_previous %}
+                    <h3 class="arrow-left"><a href="?page={{ page_obj.previous_page_number }}"><</a></h3>
+                    {% else %}
                     <h3 class="arrow-left pag-enabled"><a href="#"><</a></h3>
-                    <h3 class="arrow-right"><a href="#">></a></h3>
+                    {% endif %}
+
+                    {% if page_obj.has_next %}
+                    <h3 class="arrow-right"><a href="?page={{ page_obj.next_page_number }}">></a></h3>
+                    {% else%}
+                    <h3 class="arrow-right pag-enabled"><a href="#">></a></h3>
+                    {% endif%}
+
+                    {% if seen %}
                     <div class="product">
-                        <a href="#">
-                            <img src="#" alt="image">
+                        <a href="{% url "main:product-detail" seen.id %}">
+                            <img src="{{ seen.image.url }}" alt="image">
                             <div class="product-desc">
-                                <h2>Car</h2>
-                                <h3>2000 $</h3>
-                                <p>The best car you have ever seen!</p>
+                                <h2>{{ seen.name }}</h2>
+                                <h3>{{ seen.price}} $</h3>
+                                <p>{{ seen.description }}</p>
                             </div>
                         </a>
                     </div>
+                    {% endif %}
                 </div>
                 {% for prod in prods %}
                 <div class="product">

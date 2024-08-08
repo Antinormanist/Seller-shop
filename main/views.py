@@ -1,9 +1,18 @@
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.core.cache import cache
+from django.db.models import Q
+from django.conf import settings
+
+import redis
 
 from .models import Products, Categories
 from .utils import q_search
 from user.models import Chat
+
+REDIS_SEEN_PRODS_KEY = 'redis-seen-user-{id}'
+redis_conn = redis.StrictRedis(host='localhost', port=6379, db=settings.REDIS_DB, decode_responses=True)
 
 # Create your views here.
 def welcome(request):
@@ -55,12 +64,39 @@ def goods_page(request, cat_id=None):
         'title': 'Goods',
         'prods': products,
         'categories': Categories.objects.all(),
+        # 'seen': page_obj[0] if page_obj else None,
     }
+    
+    key = REDIS_SEEN_PRODS_KEY.format(id=request.user.id)
+    if redis_conn.zcard(key):
+        ids = redis_conn.zrange(key, 0, -1)
+
+        prods = Products.objects.filter(id__in=ids)
+        page = request.GET.get('page', 1)
+        paginator = Paginator(prods, 1)
+        page_obj = paginator.get_page(int(page))
+        context['seen'] = page_obj[0] if page_obj else None
+        context['page_obj'] = page_obj if page_obj else None
+    
     return render(request, 'main/goods_page.html', context)
 
 
 @login_required
 def product_detail(request, prod_id):
+    key = REDIS_SEEN_PRODS_KEY.format(id=request.user.id)
+    # redis_set = cache.get(key)
+    redis_conn.zadd(key, {prod_id: prod_id})
+    if redis_conn.zcard(key) == 1:
+        redis_conn.expire(key, 24 * 60 * 60)
+    if redis_conn.zcard(key) > 20:
+        
+        
+        elem = redis_conn.zrange(key, 0, 0)
+        
+        
+        redis_conn.zrem(key, elem[0])
+        # IF LENGTH > 20 THEN POP AND INSERT NEW
+    
     product = Products.objects.get(id=prod_id)
     product_asq = Products.objects.filter(id=prod_id)
     if request.GET.get('sold'):

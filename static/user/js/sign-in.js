@@ -76,6 +76,9 @@ form.addEventListener('submit', function(event) {
                 url: mailUrl,
                 data: {eol: eol, eol_type: eol_type, password: password},
                 success: function(response) {
+                    if (response.cache) {
+                        window.location = sendUrl
+                    }
                     code = response.code
                     if (label.classList.contains('hidden')) {
                         label.classList.remove('hidden')
