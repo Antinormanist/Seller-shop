@@ -27,3 +27,10 @@ def product_view(request, id=None):
         else:
             serializer = ProductSerializer(Products.objects.all(), many=True)
         return Response(serializer.data)
+    
+    
+def docs(request):
+    context = {
+        'title': 'API documentation'
+    }
+    return render(request, 'ap/api.html', context)
